@@ -8,12 +8,19 @@ import android.widget.TextView;
 
 import com.harsukh.gmtest.retrofit.Titles;
 
+import java.util.List;
+
 /**
  * Created by harsukh on 3/22/17.
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    private Titles.Data.ChildrenBean.DataBean[] titles;
+    private List<Titles.Data.ChildrenBean> titles;
+
+    public RecyclerAdapter(List<Titles.Data.ChildrenBean> titles) {
+        this.titles = titles;
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
@@ -29,7 +36,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = (View) LayoutInflater.from(parent.getContext())
+        View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
@@ -38,12 +45,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
-        holder.title.setText(titles[position].getTitle());
-        holder.url.setText(titles[position].getUrl());
+        holder.title.setText(titles.get(position).getData().getTitle());
+        holder.url.setText(titles.get(position).getData().getUrl());
     }
 
     @Override
     public int getItemCount() {
-        return titles.length;
+        return titles.size();
     }
+
+
 }

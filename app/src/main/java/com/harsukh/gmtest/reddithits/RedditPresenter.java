@@ -1,48 +1,62 @@
 package com.harsukh.gmtest.reddithits;
 
 
+import android.support.v7.widget.RecyclerView;
+
+import com.harsukh.gmtest.RecyclerAdapter;
+import com.harsukh.gmtest.retrofit.Titles;
+
+
 import javax.inject.Inject;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.functions.Action1;
+
+import static com.harsukh.gmtest.reddithits.Contract.*;
 
 /**
  * Created by harsukh on 3/29/17.
  */
 
-public class RedditPresenter implements Contract.Presenter {
+public class RedditPresenter implements Presenter {
 
-    private Contract.View view;
+    private View view;
+    private Observable<Titles> subscription;
+    private Subscription titlesSubscription;
+    private RecyclerAdapter recyclerAdapter;
 
     @Inject
-    public RedditPresenter(Contract.View view) {
+    public RedditPresenter(View view, Observable<Titles> subscription) {
+        this.view = view;
+        this.subscription = subscription;
 
     }
 
     @Override
     public void subscribe() {
-
+        titlesSubscription = subscription.subscribe(new Action1<Titles>() {
+            @Override
+            public void call(Titles titles) {
+                view.showView(titles);
+            }
+        });
     }
 
     @Override
     public void unsubscribe() {
-
+        if (!titlesSubscription.isUnsubscribed()) {
+            titlesSubscription.unsubscribe();
+        }
     }
 
     @Override
-    public void startTask() {
-
+    public void setAdapter(Titles titles) {
+        recyclerAdapter = new RecyclerAdapter(titles.getData().getChildren());
     }
 
     @Override
-    public void stopTask() {
-
-    }
-
-    @Override
-    public void resumeTask() {
-
-    }
-
-    @Override
-    public void deleteTask() {
-
+    public RecyclerAdapter getAdapter() {
+        return recyclerAdapter;
     }
 }

@@ -1,7 +1,11 @@
 package com.harsukh.gmtest.reddithits;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.harsukh.gmtest.BasePresenter;
 import com.harsukh.gmtest.BaseView;
+import com.harsukh.gmtest.RecyclerAdapter;
+import com.harsukh.gmtest.retrofit.Titles;
 
 /**
  * Created by harsukh on 3/29/17.
@@ -10,17 +14,12 @@ import com.harsukh.gmtest.BaseView;
 public interface Contract {
 
     interface Presenter extends BasePresenter {
-        void startTask();
+        void setAdapter(Titles titles);
 
-        void stopTask();
-
-        void resumeTask();
-
-        void deleteTask();
+        RecyclerAdapter getAdapter();
     }
 
-    interface View extends BaseView<Presenter>
-    {
-        void showView();
+    interface View extends BaseView<Presenter> {
+        void showView(Titles titles);
     }
 }
