@@ -14,7 +14,6 @@ public interface Contract {
 
     interface Presenter extends BasePresenter {
         void setAdapter(Titles titles);
-
         RecyclerAdapter getAdapter();
     }
 

@@ -34,7 +34,7 @@ public class RestClient {
 
     public interface RedditServiceInterface {
         //defines the http method we want to use using retrofit's handy syntax
-        @GET(".json")
+        @GET("/r/aww/.json")
         Call<Titles> getTitles();
     }
 }
