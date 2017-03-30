@@ -1,7 +1,6 @@
 package com.harsukh.gmtest.reddithits;
 
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;

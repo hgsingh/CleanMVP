@@ -1,8 +1,5 @@
 package com.harsukh.gmtest.reddithits;
 
-
-import android.support.v7.widget.RecyclerView;
-
 import com.harsukh.gmtest.RecyclerAdapter;
 import com.harsukh.gmtest.retrofit.Titles;
 
