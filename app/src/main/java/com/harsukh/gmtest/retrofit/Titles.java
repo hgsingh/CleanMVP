@@ -2,8 +2,11 @@ package com.harsukh.gmtest.retrofit;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by harsukh on 3/22/17.
@@ -46,6 +49,7 @@ public class Titles {
             public static class DataBean implements Parcelable {
                 private String url;
                 private String title;
+                private final static Pattern imgurPattern = Pattern.compile(".*(imgur).*");
 
                 public String getUrl() {
                     return url;
@@ -61,6 +65,11 @@ public class Titles {
 
                 public void setTitle(String title) {
                     this.title = title;
+                }
+
+                public boolean isImgur() {
+                    String url = getUrl();
+                    return !TextUtils.isEmpty(url) && url.matches(imgurPattern.pattern());
                 }
 
                 protected DataBean(Parcel in) {

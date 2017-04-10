@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.harsukh.gmtest.DaggerMainComponent;
 import com.harsukh.gmtest.MainModule;
@@ -17,7 +18,7 @@ import javax.inject.Inject;
  * Created by harsukh on 3/29/17.
  */
 
-public class RedditActivity extends AppCompatActivity implements Contract.View {
+public class RedditActivity extends AppCompatActivity implements Contract.View, Contract.IAdapterInterface {
 
     @Inject
     RedditPresenter redditPresenter;
@@ -51,7 +52,12 @@ public class RedditActivity extends AppCompatActivity implements Contract.View {
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        redditPresenter.setAdapter(titles);
+        redditPresenter.setAdapter(titles, this);
         recyclerView.setAdapter(redditPresenter.getAdapter());
+    }
+
+    @Override
+    public void startSlideShow(String url) {
+        redditPresenter.startSlideShow(url, this);
     }
 }

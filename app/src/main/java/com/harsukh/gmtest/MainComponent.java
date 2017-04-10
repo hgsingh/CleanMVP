@@ -1,5 +1,6 @@
 package com.harsukh.gmtest;
 
+import com.harsukh.gmtest.imgur.ImgurActivity;
 import com.harsukh.gmtest.reddithits.RedditActivity;
 
 import javax.inject.Singleton;
@@ -13,4 +14,6 @@ import dagger.Component;
 @Component(modules = {MainModule.class})
 public interface MainComponent {
     void inject(RedditActivity redditActivity);
+
+    void inject(ImgurActivity imgurActivity);
 }
