@@ -88,6 +88,6 @@ public class RedditPresenter implements Presenter {
     public void startSlideShow(String url, Context context) {
         Intent intent = new Intent(context, ImgurActivity.class);
         intent.putExtra(URL_KEY, url);
-        context.startActivity(new Intent(context, ImgurActivity.class));
+        context.startActivity(intent);
     }
 }
