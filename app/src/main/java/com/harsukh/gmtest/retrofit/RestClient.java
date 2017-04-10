@@ -40,7 +40,7 @@ public class RestClient {
             builder = new Retrofit.Builder().baseUrl(url_resource)
                     .addConverterFactory(GsonConverterFactory.create()).
             addCallAdapterFactory(RxJavaCallAdapterFactory.create());
-            retrofit = builder.client(buildLogger()).build();
+            retrofit = builder.client(new OkHttpClient()).build();
         }
         return retrofit.create(serviceClass);
     }

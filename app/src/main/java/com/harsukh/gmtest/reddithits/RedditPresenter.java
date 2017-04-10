@@ -17,7 +17,6 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.functions.Action1;
 
 import static com.harsukh.gmtest.reddithits.Contract.*;
 
