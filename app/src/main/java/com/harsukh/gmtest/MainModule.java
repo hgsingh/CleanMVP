@@ -14,7 +14,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.ResponseBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
 import rx.Observable;
@@ -56,29 +57,17 @@ public class MainModule {
 
     @Provides
     @Singleton
-    public Observable<ResponseBody> provideImgurObservable() {
-        return RestClient.createService(BASE_URL, RestClient.RedditServiceInterface.class).imgurPics(imgur_url);
+    public Observable<okhttp3.Call> provideImgurObservable() {
+        return Observable.just(new OkHttpClient().newCall(new Request.Builder()
+                .url(imgur_url)
+                .build()));
     }
 
-    @Provides
-    public Call<Titles> provideRestClient() {
-        return RestClient.createService(BASE_URL, RestClient.RedditServiceInterface.class).getTitles();
-    }
 
     @Provides
     @Singleton
-    public Observable<Titles> provideSubscription(final Call<Titles> restCall) {
-        return Observable.create(new Observable.OnSubscribe<Titles>() {
-            @Override
-            public void call(Subscriber<? super Titles> subscriber) {
-                Response<Titles> titlesResponse = null;
-                try {
-                    titlesResponse = restCall.execute();
-                } catch (IOException e) {
-                    Log.e("Subscription", "subscription failure", e);
-                }
-                subscriber.onNext(titlesResponse.body());
-            }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    public Observable<Titles> provideSubscription() {
+        return RestClient.createService(BASE_URL, RestClient.RedditServiceInterface.class).getTitles()
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -73,10 +73,7 @@ public class RestClient {
     public interface RedditServiceInterface {
         //defines the http method we want to use using retrofit's handy syntax
         @GET("/r/aww/.json")
-        Call<Titles> getTitles();
-
-        @GET
-        Observable<ResponseBody> imgurPics(String url);
+        Observable<Titles> getTitles();
     }
 
 }

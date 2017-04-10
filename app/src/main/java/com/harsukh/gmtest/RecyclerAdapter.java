@@ -31,12 +31,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         private TextView title;
         private TextView url;
         private IAdapterInterface activityInterface;
+        private View view;
 
         public ViewHolder(View v, IAdapterInterface activityInterface) {
             super(v);
             title = (TextView) v.findViewById(R.id.title);
             url = (TextView) v.findViewById(R.id.url);
             this.activityInterface = activityInterface;
+            this.view = v;
         }
 
         @Override
@@ -57,6 +59,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public void setUrl(String purl) {
             url.setText(purl);
         }
+
+        public void setClickListeners(View.OnClickListener listener) {
+            view.setOnClickListener(listener);
+        }
+
+        public void setLongClickListener(View.OnLongClickListener onLongClickListener) {
+            view.setOnLongClickListener(onLongClickListener);
+        }
     }
 
     @Override
@@ -73,6 +83,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
         holder.setTitle(titles.get(position).getData().getTitle());
         holder.setUrl(titles.get(position).getData().getUrl());
+        holder.setClickListeners(holder);
+        holder.setLongClickListener(holder);
     }
 
     @Override

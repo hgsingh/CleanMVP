@@ -2,17 +2,16 @@ package com.harsukh.gmtest.imgur;
 
 import android.util.Log;
 
-import com.harsukh.gmtest.BasePresenter;
-import com.harsukh.gmtest.BaseView;
+import java.io.IOException;
 
 import javax.inject.Inject;
 
-import okhttp3.ResponseBody;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 import rx.Observable;
-import rx.Subscriber;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import rx.functions.Action1;
 
 /**
  * Created by harsukh on 4/4/17.
@@ -21,12 +20,12 @@ import rx.schedulers.Schedulers;
 public class ImgurPresenter implements ImgurContract.ImgurPresenterContract {
 
     private ImgurContract.ImgurView imgurView;
-    private Observable<ResponseBody> imgurObservable;
+    private Observable<Call> imgurObservable;
     private Subscription subscription;
     private static final String TAG = ImgurPresenter.class.getSimpleName();
 
     @Inject
-    public ImgurPresenter(ImgurContract.ImgurView imgurView, Observable<ResponseBody> observable) {
+    public ImgurPresenter(ImgurContract.ImgurView imgurView, Observable<Call> observable) {
         this.imgurView = imgurView;
         imgurObservable = observable;
     }
@@ -47,20 +46,20 @@ public class ImgurPresenter implements ImgurContract.ImgurPresenterContract {
 
     @Override
     public void loadImages() {
-        subscription = imgurObservable.subscribeOn(Schedulers.io()).
-                observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<ResponseBody>() {
+        subscription = imgurObservable.subscribe(new Action1<Call>() {
             @Override
-            public void onCompleted() {
-            }
+            public void call(Call call) {
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.e(TAG, "onFailure: failure when calling", e);
+                    }
 
-            @Override
-            public void onError(Throwable e) {
-                Log.e(TAG, "onError: error when processing load images", e);
-            }
-
-            @Override
-            public void onNext(ResponseBody responseBody) {
-                imgurView.displayImages(responseBody.byteStream());
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        imgurView.displayImages(response.body().byteStream());
+                    }
+                });
             }
         });
     }

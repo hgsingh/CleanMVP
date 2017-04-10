@@ -15,6 +15,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -32,6 +33,7 @@ public class RedditPresenter implements Presenter {
     private RecyclerAdapter recyclerAdapter;
     private static final String TAG = RedditPresenter.class.getSimpleName();
     public static final String URL_KEY = "URL_KEY";
+
     @Inject
     public RedditPresenter(View view, Observable<Titles> subscription) {
         this.view = view;
@@ -41,9 +43,18 @@ public class RedditPresenter implements Presenter {
 
     @Override
     public void subscribe() {
-        titlesSubscription = subscription.subscribe(new Action1<Titles>() {
+        titlesSubscription = subscription.subscribe(new Subscriber<Titles>() {
             @Override
-            public void call(Titles titles) {
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: error when getting list", e);
+            }
+
+            @Override
+            public void onNext(Titles titles) {
                 view.showView(titles);
             }
         });
