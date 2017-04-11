@@ -19,7 +19,6 @@ public class CustomImgurView extends View {
 
     private static final int DEFAULT_MOVIE_DURATION = 1000;
 
-    private int movieResourceID;
     private Movie movie;
 
     private long movieStart = 0;

@@ -14,6 +14,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Call;
@@ -21,6 +22,7 @@ import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.harsukh.gmtest.retrofit.RestClient.BASE_URL;
@@ -57,10 +59,25 @@ public class MainModule {
 
     @Provides
     @Singleton
-    public Observable<okhttp3.Call> provideImgurObservable() {
-        return Observable.just(new OkHttpClient().newCall(new Request.Builder()
-                .url(imgur_url)
-                .build()));
+    public Observable<okhttp3.Response> provideImgurObservable() {
+        return Observable.create(new Observable.OnSubscribe<okhttp3.Response>() {
+            @Override
+            public void call(final Subscriber<? super okhttp3.Response> subscriber) {
+                new OkHttpClient().newCall(new Request.Builder()
+                        .url(imgur_url)
+                        .build()).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(okhttp3.Call call, IOException e) {
+                        Log.e("inside call", "onFailure: ", e);
+                    }
+
+                    @Override
+                    public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                        subscriber.onNext(response);
+                    }
+                });
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
 

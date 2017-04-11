@@ -1,5 +1,7 @@
 package com.harsukh.gmtest.imgur;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import java.io.IOException;
@@ -10,7 +12,9 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 import rx.Observable;
+import rx.Observer;
 import rx.Subscription;
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -20,12 +24,12 @@ import rx.functions.Action1;
 public class ImgurPresenter implements ImgurContract.ImgurPresenterContract {
 
     private ImgurContract.ImgurView imgurView;
-    private Observable<Call> imgurObservable;
+    private Observable<Response> imgurObservable;
     private Subscription subscription;
     private static final String TAG = ImgurPresenter.class.getSimpleName();
 
     @Inject
-    public ImgurPresenter(ImgurContract.ImgurView imgurView, Observable<Call> observable) {
+    public ImgurPresenter(ImgurContract.ImgurView imgurView, Observable<Response> observable) {
         this.imgurView = imgurView;
         imgurObservable = observable;
     }
@@ -46,20 +50,10 @@ public class ImgurPresenter implements ImgurContract.ImgurPresenterContract {
 
     @Override
     public void loadImages() {
-        subscription = imgurObservable.subscribe(new Action1<Call>() {
+        subscription = imgurObservable.subscribe(new Action1<Response>() {
             @Override
-            public void call(Call call) {
-                call.enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Log.e(TAG, "onFailure: failure when calling", e);
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        imgurView.displayImages(response.body().byteStream());
-                    }
-                });
+            public void call(Response response) {
+                imgurView.displayImages(response.body().byteStream());
             }
         });
     }
