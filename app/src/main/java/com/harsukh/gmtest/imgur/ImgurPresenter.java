@@ -1,20 +1,12 @@
 package com.harsukh.gmtest.imgur;
+import android.graphics.BitmapFactory;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-
-import java.io.IOException;
+import java.io.BufferedInputStream;
 
 import javax.inject.Inject;
-
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Response;
 import rx.Observable;
-import rx.Observer;
 import rx.Subscription;
-import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -53,7 +45,7 @@ public class ImgurPresenter implements ImgurContract.ImgurPresenterContract {
         subscription = imgurObservable.subscribe(new Action1<Response>() {
             @Override
             public void call(Response response) {
-                imgurView.displayImages(response.body().byteStream());
+                imgurView.displayImages(BitmapFactory.decodeStream(response.body().byteStream()));
             }
         });
     }

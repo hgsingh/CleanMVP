@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.harsukh.gmtest.reddithits.Contract;
 
 import java.io.InputStream;
 
@@ -31,26 +30,27 @@ public class CustomImgurView extends View {
 
     }
 
-    public void setImageResource(InputStream inputStream){
+    public void setImageResource(InputStream inputStream) {
         movie = Movie.decodeStream(inputStream);
         requestLayout();
     }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if(movie != null){
+        if (movie != null) {
             setMeasuredDimension(movie.width(), movie.height());
-        }else{
+        } else {
             setMeasuredDimension(getSuggestedMinimumWidth(), getSuggestedMinimumHeight());
         }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (movie != null){
+        if (movie != null) {
             updateAnimationTime();
             drawGif(canvas);
             invalidate();
-        }else{
+        } else {
             drawGif(canvas);
         }
     }

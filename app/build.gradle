@@ -42,6 +42,8 @@ dependencies {
     //rxjava
     compile "io.reactivex:rxjava:$rootProject.rxjavaVersion"
     compile "io.reactivex:rxandroid:$rootProject.rxandroidVersion"
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 
     compile 'com.android.support:recyclerview-v7:23.0.1'
 }

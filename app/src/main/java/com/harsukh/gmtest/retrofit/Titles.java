@@ -49,7 +49,8 @@ public class Titles {
             public static class DataBean implements Parcelable {
                 private String url;
                 private String title;
-                private final static Pattern imgurPattern = Pattern.compile(".*(imgur).*");
+                private final static Pattern imgurPattern = Pattern.compile(".*(jpeg|jpg|png)");
+                private final static Pattern gifPattern = Pattern.compile(".*(gifv).*");
 
                 public String getUrl() {
                     return url;
@@ -69,7 +70,8 @@ public class Titles {
 
                 public boolean isImgur() {
                     String url = getUrl();
-                    return !TextUtils.isEmpty(url) && url.matches(imgurPattern.pattern());
+                    return !TextUtils.isEmpty(url) && url.matches(imgurPattern.pattern())
+                            && !url.matches(gifPattern.pattern());
                 }
 
                 protected DataBean(Parcel in) {

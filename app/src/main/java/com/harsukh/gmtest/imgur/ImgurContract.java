@@ -1,5 +1,7 @@
 package com.harsukh.gmtest.imgur;
 
+import android.graphics.Bitmap;
+
 import com.harsukh.gmtest.BasePresenter;
 import com.harsukh.gmtest.BaseView;
 
@@ -12,7 +14,7 @@ import java.io.InputStream;
 public interface ImgurContract {
 
     interface ImgurView extends BaseView<ImgurPresenter> {
-        void displayImages(InputStream inputStream);
+        void displayImages(Bitmap inputStream);
 
         String getIntentData();
     }
