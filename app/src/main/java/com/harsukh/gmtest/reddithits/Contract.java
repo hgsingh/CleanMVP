@@ -26,6 +26,7 @@ public interface Contract {
 
     interface IAdapterInterface {
         void startSlideShow(String url);
+        Context getContext();
     }
 
 }

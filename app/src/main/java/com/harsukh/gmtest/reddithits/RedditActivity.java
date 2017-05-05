@@ -1,5 +1,6 @@
 package com.harsukh.gmtest.reddithits;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -59,5 +60,10 @@ public class RedditActivity extends AppCompatActivity implements Contract.View, 
     @Override
     public void startSlideShow(String url) {
         redditPresenter.startSlideShow(url, this);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 }
